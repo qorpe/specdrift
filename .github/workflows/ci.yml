@@ -16,6 +16,8 @@ jobs:
         run: dotnet build specdrift.sln -c Release
       - name: test
         run: dotnet test specdrift.sln -c Release --no-build
+      - name: docs freshness (the README still describes the engine)
+        run: ./scripts/docs-freshness.sh
       - name: license gate
         run: |
           dotnet restore specdrift.sln

@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace SpecDrift.Tests;
@@ -59,5 +60,32 @@ public class CliTests : IDisposable
         var (code, output, _) = Run("--help");
         Assert.Equal(0, code);
         Assert.Contains("specdrift validate", output);
+    }
+
+    /// <summary>
+    /// Every verb the CLI dispatches has to appear in the usage list, and the list has to be
+    /// a LIST: three contiguous lines under "usage:". A verb parked below the explanatory
+    /// prose reads as a footnote to the paragraph above it rather than a third way to run
+    /// the tool, so a reader scanning for "what can this do" never sees it.
+    /// </summary>
+    [Fact]
+    public void Help_lists_every_verb_together_under_usage()
+    {
+        var (_, output, _) = Run("--help");
+        var lines = output.Replace("\r\n", "\n").Split('\n');
+
+        var verbLines = new List<int>();
+        for (var i = 0; i < lines.Length; i++)
+        {
+            if (Regex.IsMatch(lines[i], @"^\s+specdrift (validate|drift|mcp)\b"))
+            {
+                verbLines.Add(i);
+            }
+        }
+
+        Assert.Equal(3, verbLines.Count);
+        Assert.Equal(
+            Enumerable.Range(verbLines[0], 3),
+            verbLines);
     }
 }

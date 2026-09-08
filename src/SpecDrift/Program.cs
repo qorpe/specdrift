@@ -21,11 +21,11 @@ namespace SpecDrift
             usage:
               specdrift validate <manifest.(yaml|yml|json)> [--schema <schema.json>] [--rules <rules.yaml>] [--format text|json] [--fail-on warn|error]
               specdrift drift --repo <dir> [--profile <drift.yaml>] [--format text|json] [--fail-on warn|error]
+              specdrift mcp                          # stdio MCP server exposing spec_validate + spec_drift
 
             --schema defaults to the EMBEDDED goldpath manifest schema (v1, version-stamped
             with the tool); pass it only for forks/air-gapped overrides. --fail-on warn
             makes warnings gate the exit code (default: error).
-              specdrift mcp                          # stdio MCP server exposing spec_validate + spec_drift
             """;
 
         /// <summary>Runs the CLI; returns the process exit code.</summary>
